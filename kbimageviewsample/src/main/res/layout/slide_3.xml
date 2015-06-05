@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <com.kodbiro.kbimageview.KBImageView
+        android:id="@+id/kbimageview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/marble"/>
+
+    <com.kodbiro.kbimageview.KBImageView
+        android:id="@+id/kbimageview2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="200dp"
+        android:src="@drawable/marble"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Example with border and textured border."/>
+</LinearLayout>
