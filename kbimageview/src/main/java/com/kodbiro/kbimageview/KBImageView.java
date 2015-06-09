@@ -28,6 +28,22 @@ import android.widget.ImageView;
 public class KBImageView extends ImageView {
 
 
+    private Path upperPath;
+    private Path lowerPath;
+
+    private Path shadowPath;
+    private Path borderPath;
+
+    private int oldWidth;
+    private int oldHeight;
+    private int oldPaddingBottom;
+    private int oldPaddingTop;
+    private int oldPaddingLeft;
+    private int oldPaddingRight;
+    private float oldBorderWidth;
+    private float oldShadowRadius;
+
+
     public enum ImageViewShape {
         RECTANGLE,
         CIRCLE
@@ -108,7 +124,6 @@ public class KBImageView extends ImageView {
     public void setBorderWidth(float borderWidth) {
         this.borderWidth = borderWidth;
         this.borderPaint.setStrokeWidth(borderWidth);
-        this.shadowPaint.setShadowLayer(shadowRadius, 2.0f, 2.0f, this.shadowColor);
         this.invalidate();
     }
 
@@ -137,7 +152,7 @@ public class KBImageView extends ImageView {
     public void setShadowVisible(boolean shadowVisible) {
         this.isShadowVisible = shadowVisible;
         int p = (int)this.shadowRadius;
-        this.setPadding(p,p,p,p);
+        this.setPadding(p, p, p, p);
         this.invalidate();
     }
 
@@ -148,7 +163,7 @@ public class KBImageView extends ImageView {
     public void setShadowRadius(float shadowRadius) {
         this.shadowRadius = shadowRadius;
         int p = (int)this.shadowRadius;
-        this.setPadding(p,p,p,p);
+        this.setPadding(p, p, p, p);
         this.invalidate();
     }
 
@@ -158,7 +173,7 @@ public class KBImageView extends ImageView {
      */
     public void setShadowColor(int shadowColor) {
         this.shadowColor = shadowColor;
-        this.shadowPaint.setShadowLayer(shadowRadius, 2.0f, 2.0f, shadowColor);
+        this.shadowPaint.setShadowLayer(shadowRadius, 0f, 0f, shadowColor);
         this.invalidate();
     }
 
@@ -209,13 +224,14 @@ public class KBImageView extends ImageView {
         //This draws a shadow layer below the main layer, with the specified
         //offset and color, and blur radius. If radius is 0, then the shadow
         //layer is removed.
-        this.shadowPaint.setShadowLayer(shadowRadius, 2.0f, 2.0f, this.shadowColor);
+        this.shadowPaint.setShadowLayer(shadowRadius, 0f, 0f, this.shadowColor);
 
         this.imageViewShape = ImageViewShape.RECTANGLE;
     }
 
 
     private Path createUpperPath() {
+
         Path path = new Path();
 
         float rectX = getPaddingLeft();
@@ -233,11 +249,12 @@ public class KBImageView extends ImageView {
         path.lineTo(getPaddingLeft(), getHeight()/2.0f);
         RectF arcRect = new RectF(rectX, rectY, getWidth()-rectX, getHeight()-rectY);
         path.arcTo(arcRect, -180, 180);
-        path.lineTo(getWidth()-getPaddingRight(), getHeight()/2.0f);
+        path.lineTo(getWidth() - getPaddingRight(), getHeight() / 2.0f);
         return path;
     }
 
     private Path createLowerPath() {
+
         Path path = new Path();
 
         float rectX = getPaddingLeft();
@@ -256,12 +273,15 @@ public class KBImageView extends ImageView {
         RectF arcRect = new RectF(rectX, rectY, getWidth()-rectX, getHeight()-rectY);
         path.arcTo(arcRect, -180, -180);
         path.lineTo(getWidth()-getPaddingLeft(), getHeight()/2.0f);
+
         return path;
     }
 
 
     private Path createEnclosingPath(float borderWidth) {
+
         Path path = new Path();
+
         if (this.imageViewShape == ImageViewShape.CIRCLE) {
             path.addCircle(getWidth()/2.0f, getHeight()/2.0f, getWidth() < getHeight() ? getWidth()/2.0f-borderWidth/2.0f : getHeight()/2.0f-borderWidth/2.0f, Path.Direction.CW);
         } else {
@@ -270,26 +290,74 @@ public class KBImageView extends ImageView {
         return path;
     }
 
+    @Override
+    public void invalidate() {
+        super.invalidate();
+
+        resetUpperAndLowerPath();
+        resetBorderAndShadowPath();
+    }
+
+    private void resetUpperAndLowerPath() {
+        if (getWidth() != this.oldWidth || getHeight() != this.oldHeight || getPaddingBottom() != this.oldPaddingBottom
+                || getPaddingTop() != this.oldPaddingTop || getPaddingLeft() != this.oldPaddingLeft || getPaddingRight() != this.oldPaddingRight) {
+            this.upperPath = null;
+            this.lowerPath = null;
+            this.oldWidth = getWidth();
+            this.oldHeight = getHeight();
+            this.oldPaddingBottom = getPaddingBottom();
+            this.oldPaddingTop = getPaddingTop();
+            this.oldPaddingLeft = getPaddingLeft();
+            this.oldPaddingRight = getPaddingRight();
+        }
+    }
+
+    private void resetBorderAndShadowPath() {
+        if (getWidth() != this.oldWidth || getHeight() != this.oldHeight
+                || this.borderWidth != this.oldBorderWidth || this.shadowRadius != this.oldShadowRadius){
+            this.shadowPath = null;
+            this.borderPath = null;
+            this.oldWidth = getWidth();
+            this.oldHeight = getHeight();
+            this.oldShadowRadius = shadowRadius;
+            this.oldBorderWidth = borderWidth;
+        }
+    }
 
     @Override
     public void onDraw(@NonNull Canvas canvas) {
 
         super.onDraw(canvas);
+
         if (this.imageViewShape == ImageViewShape.CIRCLE) {
-            canvas.drawPath(createUpperPath(), this.clearPaint);
-            canvas.drawPath(createLowerPath(), this.clearPaint);
+
+            if (this.upperPath == null) {
+                this.upperPath = createUpperPath();
+            }
+            if (this.lowerPath == null){
+                this.lowerPath = createLowerPath();
+            }
+
+            canvas.drawPath(this.upperPath, this.clearPaint);
+            canvas.drawPath(this.lowerPath, this.clearPaint);
         }
 
         if (isShadowVisible) {
-            canvas.drawPath(createEnclosingPath(this.shadowRadius*2), this.shadowPaint);
+            if (this.shadowPath == null){
+                this.shadowPath = createEnclosingPath(this.shadowRadius * 2);
+            }
+            canvas.drawPath(this.shadowPath, this.shadowPaint);
         }
+
         if (isBorderVisible) {
+            if (this.borderPath == null){
+                this.borderPath = createEnclosingPath(this.borderWidth + (isShadowVisible ? (this.shadowRadius * 2) : 0));
+            }
             this.clearStrokePaint.setStrokeWidth(this.borderWidth);
-            canvas.drawPath(createEnclosingPath(this.borderWidth), this.clearStrokePaint);
-            canvas.drawPath(createEnclosingPath(this.borderWidth), this.borderPaint);
+            canvas.drawPath(this.borderPath, this.clearStrokePaint);
+            canvas.drawPath(this.borderPath, this.borderPaint);
         }
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
