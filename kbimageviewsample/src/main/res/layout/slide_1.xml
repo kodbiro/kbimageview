@@ -10,8 +10,11 @@
         android:layout_height="500dp"
         android:src="@drawable/marble"
         android:background="#ff0000"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="KBImageView without size to fit"/>
 </LinearLayout>

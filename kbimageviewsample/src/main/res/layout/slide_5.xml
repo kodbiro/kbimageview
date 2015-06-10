@@ -4,31 +4,91 @@
     android:layout_height="match_parent"
     android:padding="15dp">
 
-
-    <com.kodbiro.kbimageview.KBImageView
-        android:id="@+id/kbimageview1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:src="@drawable/marble"/>
+        android:layout_height="110dp"
+        android:orientation="horizontal">
+        <com.kodbiro.kbimageview.KBImageView
+            android:id="@+id/kbimageview1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/marble"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="Circular ImageView"/>
+    </LinearLayout>
 
-    <com.kodbiro.kbimageview.KBImageView
-        android:id="@+id/kbimageview2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/marble"/>
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <com.kodbiro.kbimageview.KBImageView
+            android:id="@+id/kbimageview2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/marble"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="Circular ImageView \nwith border"/>
+    </LinearLayout>
 
-    <com.kodbiro.kbimageview.KBImageView
-        android:id="@+id/kbimageview3"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/marble"/>
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <com.kodbiro.kbimageview.KBImageView
+            android:id="@+id/kbimageview3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/marble"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="Circular ImageView \nwith shadow"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <com.kodbiro.kbimageview.KBImageView
+            android:id="@+id/kbimageview4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/marble"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:text="Circular ImageView \nwith border and shadow"/>
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:text="Circular image views are also possible."/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Examples with circular ImageView"/>
 
 </LinearLayout>

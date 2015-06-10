@@ -215,7 +215,7 @@ public class KBImageView extends ImageView {
 
         //create paint for drawing shadow
         this.shadowPaint = new Paint();
-        this.shadowPaint.setColor(Color.WHITE);
+        this.shadowPaint.setColor(Color.BLACK);
         this.shadowPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         this.shadowPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
         //we need to enable hardware acceleration for this view for drawing shadow
